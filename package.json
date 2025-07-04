@@ -1,0 +1,53 @@
+{
+  "name": "@cites/persistent-signals",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "clean": "rm -rf dist && rm -rf .cache",
+    "build": "tsc --build",
+    "prepublishOnly": "npm run clean && npm run build",
+    "pretest": "npm run build",
+    "test": "node --test './dist/**/*.test.js'"
+  },
+  "exports": {
+    ".": {
+      "default": "./dist/core/index.js",
+      "types": "./dist/core/index.d.ts"
+    },
+    "./react": {
+      "default": "./dist/integrations/react/index.js",
+      "types": "./dist/integrations/react/index.d.ts"
+    }
+  },
+  "keywords": [],
+  "author": "Colin Cheng <zbinlin@outlook.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zbinlin/persistent-signals.git"
+  },
+  "files": [
+    "./dist/",
+    "README.md"
+  ],
+  "license": "MIT",
+  "description": "",
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.19",
+    "@types/react": "^19.1.6",
+    "@types/react-dom": "^19.1.6",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@preact/signals-react": "^3.2.1"
+  },
+  "bugs": {
+    "url": "https://github.com/zbinlin/persistent-signals/issues"
+  },
+  "homepage": "https://github.com/zbinlin/persistent-signals#readme"
+}
