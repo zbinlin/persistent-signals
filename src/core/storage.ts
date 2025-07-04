@@ -17,22 +17,17 @@ export interface StorageAdapter {
  */
 export const localStorageAdapter: StorageAdapter = {
     getItem(key: string): string | null {
-        console.log("GeT:", key);
         return localStorage.getItem(key);
     },
     setItem(key: string, value: string): void {
-        console.log("SeT:", key, value);
         localStorage.setItem(key, value);
     },
     removeItem(key: string): void {
-        console.log("RE:", key);
         localStorage.removeItem(key);
     },
     watch() {
-        console.log("watching");
         window.addEventListener("storage", handleStorageChange);
         return () => {
-            console.log("unwatched");
             window.removeEventListener("storage", handleStorageChange);
         };
     },
