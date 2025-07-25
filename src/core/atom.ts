@@ -32,6 +32,7 @@ export class AtomRegistryEntry<T> {
     #originId?: string;
     #debouncedWrite?: DebouncedFunction<() => void>;
     #disposeEffect?: () => void;
+    #syncing: T | undefined = undefined;
 
     #storage: StorageAdapter;
 
@@ -123,6 +124,7 @@ export class AtomRegistryEntry<T> {
         }
 
         if (shouldUpdate) {
+            this.#syncing = remoteState.value;
             this.signal.value = remoteState.value;
             this.#version = remoteState.version;
         }
@@ -158,10 +160,10 @@ export class AtomRegistryEntry<T> {
                 this.#storage.setItem(
                     this.config.key,
                     JSON.stringify({
-                        value: this.signal.value,
+                        value: this.signal.peek(),
                         version: this.#version,
                         originId: this.#originId,
-                    })
+                    }),
                 );
             } catch (error) {
                 console.error(`[persistent-signals] Error writing key "${this.config.key}"`, error);
@@ -170,7 +172,12 @@ export class AtomRegistryEntry<T> {
 
         this.#debouncedWrite = debounce(writeToStorage, 100, { trailing: true });
         this.#disposeEffect = effect(() => {
-            void this.signal.value;
+            const value = this.signal.value;
+            if (this.#syncing === value) {
+                console.debug("[Sync]: Syncing value, skip writing");
+                this.#syncing = undefined;
+                return;
+            }
             this.#debouncedWrite?.();
         });
     }
