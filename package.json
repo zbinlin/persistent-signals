@@ -1,6 +1,6 @@
 {
   "name": "@cites/persistent-signals",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
   "scripts": {
     "clean": "rm -rf dist && rm -rf .cache",
